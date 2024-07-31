@@ -14,22 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package Model;
-
-import View.MainWindow;
-import java.util.HashMap;
-import music.PlayMusic;
-import teistris.BarPiece;
-import teistris.LPiece;
-import teistris.LiPiece;
-import teistris.SqPiece;
-import teistris.TPiece;
-import teistris.ZPiece;
-import teistris.ZiPiece;
+package teistris;
 
 /**
  * Clase que implementa o comportamento do xogo do Tetris
- *
  * @author Profe de Programación
  */
 public class Game {
@@ -41,22 +29,17 @@ public class Game {
     /**
      * Constante que define o valor máximo da coordenada x no panel de cadrados
      */
-    public final static int MAX_X = 280;
-
+    public final static int MAX_X = 160;
+    
     /**
-     * constante que define o valor maximo da coordenada Y no panel de cadrados
+     * constante que define o valor maximo da cordenad Y no panel de cadrados
      */
-    public final static int MAX_Y = 380;
+    public final static int MAX_Y =200;
 
     /**
      * Referenza á peza actual do xogo, que é a única que se pode mover
      */
     private Piece currentPiece;
-
-    /**
-     * Referenza á os cadrados que estan no chan
-     */
-    private HashMap<String, Square> groundSquares;
 
     /**
      * Referenza á ventá principal do xogo
@@ -117,12 +100,10 @@ public class Game {
 
     /**
      * Construtor da clase, que crea unha primeira peza
-     *
      * @param mainWindow Referenza á ventá principal do xogo
      */
     public Game(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        this.groundSquares = new HashMap();
         this.createNewPiece();
     }
 
@@ -132,7 +113,6 @@ public class Game {
     public void movePieceRight() {
         if (!paused) {
             currentPiece.moveRight();
-
         }
     }
 
@@ -155,9 +135,9 @@ public class Game {
     }
 
     /**
-     * Move a peza actual abaixo, se o xogo non está pausado Se a peza choca con
-     * algo e xa non pode baixar, pasa a formar parte do chan e créase unha nova
-     * peza
+     * Move a peza actual abaixo, se o xogo non está pausado Se a peza choca
+     * con algo e xa non pode baixar, pasa a formar parte do chan e créase unha
+     * nova peza
      */
     public void movePieceDown() {
         if ((!paused) && (!currentPiece.moveDown())) {
@@ -177,47 +157,18 @@ public class Game {
      * @return true se esa posición é válida, se non false
      */
     public boolean isValidPosition(int x, int y) {
-
-        if ((x == MAX_X) || (x < 0) || (y == MAX_Y) || groundSquares.containsKey(x + "," + y)) {
+        if ((x == MAX_X) || (x < 0) || (y == MAX_Y)) {
             return false;
         }
         return true;
-
     }
 
     /**
      * Crea unha nova peza e a establece como peza actual do xogo
      */
     private void createNewPiece() {
-
-        //crea peza aleatoria
-        int pieceType = new java.util.Random().nextInt(7);
-
-        switch (pieceType) {
-            case 0:
-                currentPiece = new SqPiece(this);
-                break;
-            case 1:
-                currentPiece = new LPiece(this);
-                break;
-            case 2:
-                currentPiece = new BarPiece(this);
-                break;
-            case 3:
-                currentPiece = new TPiece(this);
-                break;
-            case 4:
-                currentPiece = new LiPiece(this);
-                break;
-            case 5:
-                currentPiece = new ZPiece(this);
-                break;
-            case 6:
-                currentPiece = new ZiPiece(this);
-                break;
-
-        }
-
+        
+        currentPiece =new Piece(this);
     }
 
     /**
@@ -225,12 +176,9 @@ public class Game {
      */
     private void addPieceToGround() {
         // Engadimos os cadrados da peza ao chan
-        for (Square square : currentPiece.getSquares()) {
-            groundSquares.put(square.getCoordinates(), square);
-        }
+
         // Chamamos ao método que borra as liñas do chan que estean completas
         this.deleteCompletedLines();
-
     }
 
     /**
@@ -238,25 +186,7 @@ public class Game {
      * cadrados do chan e súmase unha nova liña no número de liñas realizadas
      */
     private void deleteCompletedLines() {
-        boolean lineDeleted = false;
-        for (int i = 0; i < MAX_Y; i = (i + SQUARE_SIDE)) {
-            int result = 0;
-            for (int j = 0; j <= MAX_X; j = (j + SQUARE_SIDE)) {
-                if (groundSquares.containsKey(j + "," + i)) {
-                    result = (result + SQUARE_SIDE);
-                }
-            }
-            if (result == MAX_X) {
-                deleteLine(i);
-                lineDeleted = true;
-                numberOfLines++;
-            }
 
-        }
-        
-        if (lineDeleted) {
-            mainWindow.showNumberOfLines(numberOfLines);
-        }
     }
 
     /**
@@ -267,24 +197,7 @@ public class Game {
      * @param y Coordenada y da liña a borrar
      */
     private void deleteLine(int y) {
-        for (int i = 0; i < MAX_X; i = (i + SQUARE_SIDE)) {
-            Square sq = (Square) groundSquares.get(i + "," + y);
 
-            mainWindow.deleteSquare(sq.getLblSquare());
-            groundSquares.remove(sq.getCoordinates());
-        }
-        for (int d = y - SQUARE_SIDE; d >= 0; d = (d - SQUARE_SIDE)) {
-            for (int j = 0; j <= MAX_X; j = (j + SQUARE_SIDE)) {
-                Square squp = (Square) groundSquares.get((j + "," + d));
-                if (squp != null) {
-
-                    squp.setY(d + SQUARE_SIDE);
-                    groundSquares.remove(j + "," + d);
-                    groundSquares.put(squp.getCoordinates(), squp);
-                }
-
-            }
-        }
     }
 
     /**
@@ -293,25 +206,7 @@ public class Game {
      * @return true se a peza actual choca cos cadrados do chan; se non false
      */
     private boolean hitPieceTheGround() {
-
-        for (Square square : currentPiece.getSquares()) {
-            if (groundSquares.containsKey(square.getCoordinates())) {
-                return true;
-            }
-        }
-
+        // Polo momento, non facemos nada
         return false;
     }
-
-    /**
-     *
-     */
-    public void rotate() {
-
-        if (!paused) {
-            currentPiece.rotate();
-
-        }
-    }
-
 }

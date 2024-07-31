@@ -10,20 +10,18 @@ import Model.Piece;
 import java.awt.Color;
 
 /**
- * Esta clase representa una pieza de tipo Li en el juego Tetris. La pieza Li se
- * compone de cuatro cuadrados dispuestos en forma de L invertida. Esta clase
- * gestiona la creación y rotación de la pieza.
+ * clase que extende a clase Piece e crea a peza L
  *
- *
+ * @author rferpor
  */
 public class LiPiece extends Piece {
 
     private int position = 0;
 
     /**
-     * Crea una nueva instancia de la pieza Li en el juego Tetris.
+     * creamos a peza Li
      *
-     * @param game El juego en el que se encuentra la pieza.
+     * @param game
      */
     public LiPiece(Game game) {
 
@@ -31,15 +29,15 @@ public class LiPiece extends Piece {
         squares = new Square[4];
         squares[0] = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, 0, Color.WHITE, game);
         squares[1] = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, Game.SQUARE_SIDE, Color.WHITE, game);
-        squares[2] = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, 2 * Game.SQUARE_SIDE, Color.WHITE, game);
+        squares[2] = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, 2 * Game.SQUARE_SIDE, Color .WHITE, game);
         squares[3] = new Square(Game.MAX_X / 2 - 2 * Game.SQUARE_SIDE, 2 * Game.SQUARE_SIDE, Color.WHITE, game);// Cambiar coordenadas
 
     }
 
     /**
-     * Rota la pieza Li en el sentido de las agujas del reloj.
+     * metodo que rota a peza Li
      *
-     * @return true si la rotación es posible, de lo contrario false.
+     * @return
      */
     @Override
     public boolean rotate() {
@@ -47,7 +45,7 @@ public class LiPiece extends Piece {
         boolean canRotate = false;
         switch (position) {
             case 0:
-                // Condiciones de movimiento de la pieza
+                  //move piece conditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -66,7 +64,7 @@ public class LiPiece extends Piece {
                 break;
 
             case 1:
-                // Condiciones de movimiento de la pieza
+                  //move piece conditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -84,7 +82,7 @@ public class LiPiece extends Piece {
                 break;
 
             case 2:
-                // Condiciones de movimiento de la pieza
+                  //move piece conditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -101,9 +99,9 @@ public class LiPiece extends Piece {
                     canRotate = true;
                 }
                 break;
-
+                
             case 3:
-                // Condiciones de movimiento de la pieza
+                  //move piece conditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {

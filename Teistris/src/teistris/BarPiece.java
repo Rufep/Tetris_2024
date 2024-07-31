@@ -10,20 +10,17 @@ import Model.Piece;
 import java.awt.Color;
 
 /**
- * Esta clase representa una pieza de tipo Barra en el juego Tetris. La pieza
- * Barra se compone de cuatro cuadrados dispuestos en línea vertical. Esta clase
- * gestiona la creación y rotación de la pieza.
  *
- *
+ * @author rubgz
  */
 public class BarPiece extends Piece {
 
     private int position = 0;
 
     /**
-     * Crea una nueva instancia de la pieza Barra en el juego Tetris.
+     * creamos a peza Bar PieceS
      *
-     * @param game El juego en el que se encuentra la pieza.
+     * @param game
      */
     public BarPiece(Game game) {
 
@@ -38,9 +35,8 @@ public class BarPiece extends Piece {
     }
 
     /**
-     * Rota la pieza Barra en el sentido de las agujas del reloj.
-     *
-     * @return true si la rotación es posible, de lo contrario false.
+     *Aqui rotamos a peza Bar
+     * @return
      */
     @Override
     public boolean rotate() {
@@ -48,7 +44,8 @@ public class BarPiece extends Piece {
         boolean canRotate = false;
         switch (position) {
             case 0:
-                // Condiciones de movimiento de la pieza
+                //move piece conditions
+
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -66,7 +63,7 @@ public class BarPiece extends Piece {
                 }
                 break;
             case 1:
-                // Condiciones de movimiento de la pieza
+                //move piece conditions
                 if (game.isValidPosition(squares[0].getX() + Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() - Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX() - Game.SQUARE_SIDE, squares[3].getY())) {
@@ -83,8 +80,9 @@ public class BarPiece extends Piece {
                     canRotate = true;
                 }
                 break;
-            case 2:
-                // Condiciones de movimiento de la pieza
+                     case 2:
+                //move piece conditions
+
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -100,8 +98,8 @@ public class BarPiece extends Piece {
                     position++;
                     canRotate = true;
                 }
-            case 3:
-                // Condiciones de movimiento de la pieza
+                   case 3:
+                //move piece conditions
                 if (game.isValidPosition(squares[0].getX() + Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() - Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX() - Game.SQUARE_SIDE, squares[3].getY())) {
@@ -117,6 +115,7 @@ public class BarPiece extends Piece {
                     position = 0;
                     canRotate = true;
                 }
+
 
         }
 

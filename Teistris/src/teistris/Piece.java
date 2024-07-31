@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package Model;
+package teistris;
 
 import java.awt.Color;
 
@@ -23,76 +23,49 @@ import java.awt.Color;
  *
  * @author Profe de Programación
  */
-public abstract class Piece {
+public class Piece {
 
     /**
      * Referenza ao obxecto xogo
      */
-    protected Game game;
+    private Game game;
 
     /**
      * Referenzas aos catro cadrados que forman a peza
      */
-    //protected Square a = squares[0], b = squares[1], c = squares[2], d = squares[3];
-    protected Square[] squares;
+    private Square a, b, c, d;
 
     /**
-     *
-     * @return
+     * Construtor da clase, que crea os catro cadrados que forman a peza
      */
-    public Game getGame() {
-        return game;
-    }
-
-    /**
-     *
-     * @param game
-     */
-    public void setGame(Game game) {
+    public Piece(Game game) {
         this.game = game;
+        
+        a = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, 0, Color.BLUE, game);
+        b = new Square(Game.MAX_X / 2, 0, Color.BLUE, game);
+        c = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, Game.SQUARE_SIDE,
+                Color.BLUE, game);
+        d = new Square(Game.MAX_X / 2, Game.SQUARE_SIDE, Color.BLUE, game);
     }
 
-    /**
-     *
-     * @return
-     */
-    public Square[] getSquares() {
-        return squares;
-    }
-
-    /**
-     *
-     * @param squares
-     */
-    public void setSquares(Square[] squares) {
-        this.squares = squares;
-    }
-
-  
- 
     /**
      * Move a ficha á dereita se é posible
      *
      * @return true se o movemento da ficha é posible, se non false
      */
     public boolean moveRight() {
-
-        boolean move = true;
-
-        for (Square sq : squares) {
-            if (!game.isValidPosition(sq.getX() + Game.SQUARE_SIDE, sq.getY())) {
-                move = false;
-            }
+        
+        boolean move;
+        if (game.isValidPosition(Game.MAX_X, Game.MAX_Y)) {
+            
+            a.setX(0 + Game.SQUARE_SIDE);
+            b.setX(0 + Game.SQUARE_SIDE);
+            c.setX(0 + Game.SQUARE_SIDE);
+            d.setX(0 + Game.SQUARE_SIDE);
+    
         }
-
-        if (move) {
-            for (Square i : squares) {
-                i.setX(i.getX() + Game.SQUARE_SIDE);
-            }
-            return true;
-        }
-        return false;
-
+        
+        return true;
     }
 
     /**
@@ -101,21 +74,8 @@ public abstract class Piece {
      * @return true se o movemento da ficha é posible, se non false
      */
     public boolean moveLeft() {
-
-        boolean move = true;
-
-        for (Square sq : squares) {
-            if (!game.isValidPosition(sq.getX() - Game.SQUARE_SIDE, sq.getY())) {
-                move = false;
-            }
-        }
-        if (move) {
-            for (Square i : squares) {
-                i.setX(i.getX() - Game.SQUARE_SIDE);
-            }
-            return true;
-        }
-        return false;
+        
+        return true;
     }
 
     /**
@@ -124,23 +84,8 @@ public abstract class Piece {
      * @return true se o movemento da ficha é posible, se non false
      */
     public boolean moveDown() {
-
-        boolean move = true;
-
-        for (Square sq : squares) {
-            if (!game.isValidPosition(sq.getX(), sq.getY() + Game.SQUARE_SIDE)) {
-                move = false;
-            }
-        }
-        if (move) {
-
-            for (Square i : squares) {
-                i.setY(i.getY() + Game.SQUARE_SIDE);
-            }
-            return true;
-        }
-        return false;
-
+        
+        return true;
     }
 
     /**
@@ -153,5 +98,5 @@ public abstract class Piece {
         // por iso simplemente devolvemos true
         return true;
     }
-
+    
 }

@@ -9,11 +9,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 /**
- * Esta clase gestiona la reproducción de clips de sonido en el juego Tetris.
- * Proporciona métodos para reproducir la música de fondo, sonidos de línea
- * completada y sonidos de Tetris.
  *
- *
+ * @author rferpor
  */
 public class PlayMusic {
 
@@ -43,10 +40,10 @@ public class PlayMusic {
         }
     }
 
-    /**
-     * Metodo que reproduce un sondico cuando se realizan 4 o mas lineas TETRIS
-     */
-    public static void playTetrisSound() {
+/**
+ * metodo que reproduce un sondico cuand se realizan 4 o mas lineas TETRIS
+ */
+public static void playTetrisSound() {
         try {
             Clip tetrisSoundClip = AudioSystem.getClip();
             tetrisSoundClip.open(AudioSystem.getAudioInputStream(new File("SoundTetrisLines.wav")));
@@ -56,18 +53,19 @@ public class PlayMusic {
         }
     }
 
-    /**
-     * Metodo que reproduce un sonido al realizar una linea
-     */
-    public static void playLineCompletedSound() {
-        try {
-            Clip lineCompletedSoundClip = AudioSystem.getClip();
-            lineCompletedSoundClip.open(AudioSystem.getAudioInputStream(new File("soundLine.wav")));
-            lineCompletedSoundClip.start();
-        } catch (Exception e) {
-            System.out.println("ERROR PLAYING LINE COMPLETED SOUND: " + e);
-        }
+/**
+ * metodo que reproduce un sonido al realizar una linea
+ */
+public static void playLineCompletedSound() {
+    try {
+        Clip lineCompletedSoundClip = AudioSystem.getClip();
+        lineCompletedSoundClip.open(AudioSystem.getAudioInputStream(new File("soundLine.wav")));
+        lineCompletedSoundClip.start();
+    } catch (Exception e) {
+        System.out.println("ERROR PLAYING LINE COMPLETED SOUND: " + e);
     }
+}
+
 
     /**
      * Metodo para parar o clip de son

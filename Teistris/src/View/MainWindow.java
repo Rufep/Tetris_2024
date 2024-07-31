@@ -26,72 +26,59 @@ import javax.swing.UIManager;
 import music.PlayMusic;
 
 /**
- * Clase que representa la ventana principal del juego Tetris.
+ * Clase que implementa a ventá principal do xogo do Tetris
  *
- * Esta ventana contiene la interfaz de usuario y gestiona la interacción con el
- * jugador, así como la lógica del juego y la manipulación de la base de datos
- * para almacenar las puntuaciones.
+ * @author Profe de Programación
  */
 public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher {
 
     KeyboardFocusManager keyFocus = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
-    private Game game = null;  // Referencia al objeto del juego actual
-    private int dificultyLines = 20; // Número de líneas necesarias para aumentar la dificultad
-    private int delay = 1000; // Retardo inicial entre movimientos de las piezas
-    private Timer timer = null; // Temporizador para controlar la caída automática de las piezas
+    private Game game = null; // Referenza ao obxecto do xogo actual
+    private int dificultyLines = 20;
+    private int delay = 1000;
+    private Timer timer = null;
 
     /**
-     * Representa una variable de tecla.
+     *
      */
     public char key;
-    /**
-     * Lista de puntos.
-     */
     private ArrayList<Integer> ponitslist = new ArrayList();
-    /**
-     * Fondo de imagen.
-     */
+
     ImagenFondo background = new ImagenFondo();
 
     /**
-     * Constructor de la clase MainWindow.
-     *
-     * Inicializa la ventana principal del juego Tetris, configurando su
-     * contenido, como la interfaz de usuario y la gestión de eventos de
-     * teclado.
+     * Creates new form MainWindow
      */
     public MainWindow() {
-        // Establece el contenido de la ventana como el fondo de imagen
+
         this.setContentPane(background);
-        // Deshabilita la capacidad de redimensionar la ventana
+
         setResizable(false);
-        // Inicializa los componentes de la interfaz de usuario
+
         initComponents();
-        // Agrega el despachador de eventos de teclado a la ventana
+
         keyFocus.addKeyEventDispatcher(this);
-        // Establece la conexión con la base de datos
+
         DataBasePoints.getConnect();
-        // Crea la tabla de puntuaciones en la base de datos si no existe
+
         DataBasePoints.createPointsTable();
 
-        // Carga las puntuaciones desde la base de datos y las muestra en la ventana;
+        //  DataBasePoints.getPoints();
         loadPoints();
 
     }
 
     /**
-     * Carga las puntuaciones almacenadas en la base de datos y las muestra en
-     * el combo box.
+     * Recarga o combobox cos datos das puntuacións
      */
     private void loadPoints() {
-        // Obtiene la lista de puntuaciones almacenadas en la base de datos
         ArrayList<Score> scores = DataBasePoints.getPoints();
-        // Formato de fecha personalizado para mostrar la fecha y hora de la puntuación
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy  -  hh:mm");
-        // Elimina todos los elementos del combo box de puntuaciones
+
         PointsMax.removeAllItems();
-        // Itera sobre cada puntuación y la agrega al combo box con el formato adecuado
+
         for (Score score : scores) {
             PointsMax.addItem(score.getPoints() + " Points " + " -- " + " Date & Hour " + dateFormat.format(score.getDate()) + " -- " + " Name : " + score.getName());
         }
@@ -99,58 +86,54 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
     }
 
     /**
-     * Agrega un cuadrado al panel de juego.
+     * Pinta un cadrado no panel de cadrados
      *
-     * @param lblSquare Etiqueta con el cuadrado que se desea agregar al panel
+     * @param lblSquare Etiqueta co cadrado que se quere pintar no panel
      */
     public void drawSquare(JLabel lblSquare) {
-        // Agrega la etiqueta del cuadrado al panel de juego
         pnlGame1.add(lblSquare);
-        // Vuelve a pintar el panel para mostrar el cuadrado agregado
         pnlGame1.repaint();
     }
 
     /**
-     * Elimina un cuadrado del panel de juego.
+     * Borra un cadrado do panel de cadrados
      *
-     * @param lblSquare Etiqueta con el cuadrado que se desea eliminar del panel
+     * @param lblSquare Etiqueta co cadrado que se quere borrar do panel
      */
     public void deleteSquare(JLabel lblSquare) {
-        // Elimina la etiqueta del cuadrado del panel de juego
         pnlGame1.remove(lblSquare);
-        // Vuelve a pintar el panel para reflejar el cambio
         pnlGame1.repaint();
     }
 
     /**
-     * Actualiza en la ventana el número de líneas completadas en el juego.
+     * Actualiza na ventá o número de liñas que van feitas no xogo
      *
-     * @param numberOfLines Número de líneas completadas en el juego
+     * @param numberOfLines Número de liñas feitas no xogo
      */
     public void showNumberOfLines(int numberOfLines) {
-        // Obtiene el número de líneas ya completadas
         int alreadyMadeLines = Integer.parseInt(lblNumberOfLines.getText());
-        // Calcula las líneas eliminadas en esta jugada
+        
         int linesDeleted = numberOfLines - alreadyMadeLines;
-        // Actualiza el número de líneas en la ventana
+        
         lblNumberOfLines.setText(String.valueOf(numberOfLines));
 
-        // Calcula los puntos obtenidos por las líneas eliminadas
-        int pointsPerLine, totalPoints, pointsacumulator = Integer.parseInt(lblnumberOfPoints.getText()), pointsLineCalc;
+        //muestra puntos
+        int pointsPerLine, totalPoints, pointsacumulator =Integer.parseInt(lblnumberOfPoints.getText()), pointsLineCalc;
         if (linesDeleted >= 4) {
             pointsPerLine = 25;
-            PlayMusic.playTetrisSound();// Reproduce un sonido de Tetris
+            PlayMusic.playTetrisSound();
         } else {
             pointsPerLine = 10;
-            PlayMusic.playLineCompletedSound();// Reproduce un sonido de línea completada
+            PlayMusic.playLineCompletedSound();
         }
-
-        pointsLineCalc = linesDeleted * pointsPerLine;// Calcula los puntos por líneas eliminadas
-        totalPoints = pointsacumulator + pointsLineCalc;// Calcula el total de puntos
-        // Actualiza los puntos totales en la ventana
+       
+        pointsLineCalc = linesDeleted * pointsPerLine;
+        totalPoints = pointsacumulator + pointsLineCalc;
+    
+        
         lblnumberOfPoints.setText(String.valueOf(totalPoints));
 
-        // Aumenta la velocidad del juego si se alcanza un cierto número de líneas
+        //aaumenta la velocidad del juego
         if (numberOfLines >= dificultyLines) {
             delay = delay / 2;
             timer.setDelay(delay);
@@ -160,53 +143,55 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
     }
 
     /**
-     * Muestra el mensaje de fin de juego y guarda las puntuaciones en la base
-     * de datos.
+     * Metodo que mostra a mensaxe de final do xogo tamen se gardan os puntos e
+     * se cargan no combo box e para a musica
      */
     public void showGameOver() {
-        game = null;// Limpia la referencia al juego
+        game = null;
 
-        timer.stop();// Detiene el temporizado
-        DataBasePoints.getPoints();// Obtiene las puntuaciones desde la base de datos
+        timer.stop();
+        DataBasePoints.getPoints();
 
-        int points = Integer.parseInt(lblnumberOfPoints.getText()); // Obtiene la cantidad de puntos del juego
-        String name = JOptionPane.showInputDialog(this, "Introduce as 3 iniciais do teu Nome: ");// Solicita al usuario sus iniciales
-        Score score = new Score(points, null, name);// Crea un nuevo registro de puntuación
-        DataBasePoints.savePoints(score);// Guarda la puntuación en la base de datos
-        loadPoints();// Actualiza la lista de puntuaciones mostrada
-        PlayMusic.pararMusica();// Detiene la reproducción de música
-        JOptionPane.showMessageDialog(this, "Fin do xogo");// Muestra un mensaje de fin de juego
+        int points = Integer.parseInt(lblnumberOfPoints.getText());
+        String name = JOptionPane.showInputDialog(this, "Introduce as 3 iniciais do teu Nome: ");
+        Score score = new Score(points, null, name);
+        DataBasePoints.savePoints(score);
+        loadPoints();
+        PlayMusic.pararMusica();
+        JOptionPane.showMessageDialog(this, "Fin do xogo");
     }
 
+    //Switch que controla o movemento das pezas e a rotacion mediante tecras
     /**
-     * Maneja los eventos de teclado para controlar el movimiento de las piezas
-     * y la rotación.
+     *
+     * @param keysMove
+     * @return
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent keysMove) {
-        if (game != null) { // Verifica si el juego está en curso
-            if (keysMove.getID() == KeyEvent.KEY_PRESSED) {// Verifica si se presionó una tecla
-                switch (keysMove.getKeyCode()) {// Detecta qué tecla se presionó
+        if (game != null) {
+            if (keysMove.getID() == KeyEvent.KEY_PRESSED) {
+                switch (keysMove.getKeyCode()) {
                     case KeyEvent.VK_W:
                     case KeyEvent.VK_UP:
 
-                        game.rotatePiece(); // Rota la pieza hacia arriba
+                        game.rotatePiece();
 
                         break;
                     case KeyEvent.VK_A:
                     case KeyEvent.VK_LEFT:
 
-                        game.movePieceLeft();// Mueve la pieza hacia la izquierda
+                        game.movePieceLeft();
                         break;
                     case KeyEvent.VK_S:
                     case KeyEvent.VK_DOWN:
 
-                        game.movePieceDown();// Mueve la pieza hacia abajo
+                        game.movePieceDown();
                         break;
                     case KeyEvent.VK_D:
                     case KeyEvent.VK_RIGHT:
 
-                        game.movePieceRight();// Mueve la pieza hacia la derecha
+                        game.movePieceRight();
                         break;
 
                 }
@@ -219,25 +204,25 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
     }
 
     /**
-     * Inicia un nuevo juego.
+     * Inicia un novo xogo
      */
     private void startGame() {
 
-        // Reproduce un clip de sonido
+        //chama o metodo reproducirMusica da clase PlayMusic para reproducir un clip de son
         PlayMusic.reproducirMusica();
 
-        // Limpia todo lo que podría haberse dibujado en el panel de juego
+        // Limpamos todo o que puidese haber pintado no panel do xogo
         pnlGame1.removeAll();
-        // Crea un nuevo objeto juego
+        // Creamos un novo obxecto xogo
         game = new Game(this);
-        /// Desactiva el botón de pausa
+        // Desactivamos o botón de pausa
         tglbtnPause.setSelected(false);
-        // Establece el número de líneas mostradas en la ventana a cero
+        // Establecemos o número de liñas que se mostran na ventá a cero
         lblNumberOfLines.setText("0");
         lblnumberOfPoints.setText("0");
 
         if (timer == null) {
-            // Crea un temporizador y lo inicializa con un retraso de 1000 milisegundos
+            //creamos un timer e facemos que o volver a inicialo se setee el timer al deley inicial
             timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent btnDownActionPerformed) {
@@ -246,11 +231,10 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
                     }
                 }
             });
-            // Inicia el temporizador
+            //inicia o timer
             timer.start();
 
         } else {
-            // Restablece el temporizador al retraso inicial
             timer.setDelay(1000);
         }
 
@@ -274,6 +258,7 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
         btnRight = new javax.swing.JButton();
         btnDown = new javax.swing.JButton();
         lblLines = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         lblNumberOfLines = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblnumberOfPoints = new javax.swing.JLabel();
@@ -391,6 +376,10 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
         lblLines.setForeground(new java.awt.Color(255, 255, 255));
         lblLines.setText("Liñas:");
 
+        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Created by Ana P. & Ruben FP.");
+
         lblNumberOfLines.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblNumberOfLines.setForeground(new java.awt.Color(255, 51, 51));
         lblNumberOfLines.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -446,43 +435,51 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
                                         .addComponent(lblnumberOfPoints, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(btnRotate, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(pnlGame1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(79, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(PointsMax, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(EraseButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnNewGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(27, 27, 27)
-                                .addComponent(tglbtnPause, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(EraseButton)))
+                                .addComponent(tglbtnPause, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
-                        .addComponent(btnLeft)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRight, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(148, 148, 148)
-                        .addComponent(btnDown, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addComponent(jLabel3)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(122, 122, 122)
+                                .addComponent(btnLeft)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRight, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(148, 148, 148)
+                                .addComponent(btnDown, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(PointsMax, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 57, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewGame)
                     .addComponent(tglbtnPause, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -511,28 +508,21 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/**
-     * Al hacer clic en el botón "Nueva partida", invocamos al método privado
-     * que inicia un nuevo juego
-     *
-     * @param evt
-     */
-    private void btnNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewGameActionPerformed
 
+    private void btnNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewGameActionPerformed
+        // Ao picar no botón de "Nova partida", invocamos ao método privado
+        // que inicia un novo xogo
         startGame();
 
     }//GEN-LAST:event_btnNewGameActionPerformed
-/**
- * Al hacer clic en el botón de "Pausa", llamamos al objeto de juego para
- * establecer el atributo de pausa según el estado del botón
- * @param evt 
- */
+
     private void tglbtnPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglbtnPauseActionPerformed
- 
+        // Ao picar no botón de "Pausa", chamamos ao obxecto xogo para
+        // establecer o atributo de pausa no estado do botón
         if (game != null) {
             game.setPaused(tglbtnPause.isSelected());
 
-            // Cuando el botón de pausa está seleccionado, se llaman a los métodos para detener y para iniciar el clip de sonido
+            //cando o boton de pausa este seleccionado llamase os metodos para deter e para iniciar o clip de son
             if (tglbtnPause.isSelected()) {
                 PlayMusic.pararMusica();
             } else {
@@ -540,33 +530,23 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
             }
         }
     }//GEN-LAST:event_tglbtnPauseActionPerformed
-/**
- * Al hacer clic en el botón de "Rotar", llamamos al objeto de juego para que
- * rote la pieza actual
- * @param evt 
- */
+
     private void btnRotateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRotateActionPerformed
-     
+        // Ao picar no botón de "Rotar", chamamos ao obxecto xogo para que
+        // rote a peza actual
         if (game != null) {
             game.rotatePiece();
         }
     }//GEN-LAST:event_btnRotateActionPerformed
-/**
- * Al hacer clic en el botón de "Izquierda", llamamos al objeto de juego para que
- * mueva la pieza actual hacia la izquierda
- * @param evt 
- */
-    private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
 
+    private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
+        // Ao picar no botón de "Esquerda", chamamos ao obxecto xogo para que
+        // se mova a peza actual á esquerda
         if (game != null) {
             game.movePieceLeft();
         }
     }//GEN-LAST:event_btnLeftActionPerformed
-/**
- * Al hacer clic en el botón de "Derecha", llamamos al objeto de juego para que
- * mueva la pieza actual hacia la derecha
- * @param evt 
- */
+
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
         // Ao picar no botón de "Dereita", chamamos ao obxecto xogo para que
         // se mova a peza actual á dereita
@@ -574,11 +554,7 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
             game.movePieceRight();
         }
     }//GEN-LAST:event_btnRightActionPerformed
-/**
- * Al hacer clic en el botón de "Derecha", llamamos al objeto de juego para que
- *  mueva la pieza actual hacia la derecha
- * @param evt 
- */
+
     private void btnDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownActionPerformed
         // Ao picar no botón de "Abaixo", chamamos ao obxecto xogo para que
         // se mova a peza actual cara abaixo
@@ -586,11 +562,7 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
             game.movePieceDown();
         }
     }//GEN-LAST:event_btnDownActionPerformed
-/**
- * Al hacer clic en el botón de "Borrar", borramos todos los puntos de la base de datos
- * y eliminamos todos los elementos del combo box
- * @param evt 
- */
+
     private void EraseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EraseButtonActionPerformed
         // TODO add your handling code here:
         DataBasePoints.deleteAllPoints();
@@ -599,7 +571,7 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
     }//GEN-LAST:event_EraseButtonActionPerformed
 
     /**
-     * Método principal que inicia la aplicación.
+     * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -635,7 +607,7 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                // Configura el aspecto y la sensación del Swing.
+
                 /**
                  * Try - Catch que fai que o Look and Feel usado sea FlatDarkLaf
                  * que o temos na libreria FlatLaf-3.0.jar
@@ -661,6 +633,7 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
     private javax.swing.JButton btnNewGame;
     private javax.swing.JButton btnRight;
     private javax.swing.JButton btnRotate;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblLines;
@@ -671,28 +644,26 @@ public class MainWindow extends javax.swing.JFrame implements KeyEventDispatcher
     private javax.swing.JToggleButton tglbtnPause;
     // End of variables declaration//GEN-END:variables
 
+    // clase interna para colocar imagen de fondo al  JFrame
     /**
-     * Clase que proporciona un panel con una imagen de fondo. Esta clase
-     * extiende JPanel y se encarga de pintar la imagen de fondo en el panel.
+     * clase que vai cargar unha imaxen de fondo no Jframe
      */
     public class ImagenFondo extends JPanel {
 
         private Image imagen;
 
         /**
-         * Método para pintar la imagen de fondo en el panel.
+         * metodo que pinta una imaxen de fondo no Jframe
          *
-         * @param g Objeto Graphics utilizado para dibujar en el panel.
+         * @param g
          */
         @Override
         public void paint(Graphics g) {
-            // Carga la imagen desde el recurso ubicado en "/View/fondo.jpg"
+
             imagen = new ImageIcon(getClass().getResource("/imagen/fondo.jpg")).getImage();
-            // Dibuja la imagen en el panel con las dimensiones del panel
+
             g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
-            // Hace que el panel sea transparente para que la imagen de fondo se vea a través de él   
             setOpaque(false);
-            // Pinta los componentes hijos del panel
             super.paint(g);
 
         }

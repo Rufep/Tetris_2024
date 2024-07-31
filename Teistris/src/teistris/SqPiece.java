@@ -10,37 +10,32 @@ import Model.Piece;
 import java.awt.Color;
 
 /**
- * Esta clase representa una pieza cuadrada, que extiende la clase Piece. No
- * rota ya que es un cuadrado.
- *
+ *SqPiece que estende a clase Piece
+ * @author rferpor
  */
 public class SqPiece extends Piece {
 
     /**
-     * Constructor para la clase SqPiece, que crea cuatro cuadrados formando la
-     * pieza cuadrada.
-     *
-     * @param game El objeto Game que representa el juego actual.
+     * Construtor da clase, que crea os catro cadrados que forman a peza
+     * square
+     * @param game
      */
     public SqPiece(Game game) {
         this.game = game;
-
-        // Crea cuatro cuadrados para la pieza cuadrada
+        
         squares = new Square[4];
         squares[0] = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, 0, Color.blue, game);
         squares[1] = new Square(Game.MAX_X / 2, 0, Color.blue, game);
-        squares[2] = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, Game.SQUARE_SIDE, Color.blue, game);
+        squares[2] = new Square(Game.MAX_X / 2 - Game.SQUARE_SIDE, Game.SQUARE_SIDE,Color.blue, game);
         squares[3] = new Square(Game.MAX_X / 2, Game.SQUARE_SIDE, Color.blue, game);
     }
-
+  
     /**
-     * Método para rotar la pieza cuadrada. Dado que es un cuadrado, no rota,
-     * por lo que siempre devuelve true.
-     *
-     * @return Siempre devuelve true ya que las piezas cuadradas no rotan.
+     *Metodo que rota a peza , Neste caso a peza cadrada non e necesario rotala
+     * @return
      */
     public boolean rotate() {
-        // Las piezas cuadradas no rotan
+        //esta peza non rota
         return true;
     }
 

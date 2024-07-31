@@ -7,13 +7,8 @@ package Model;
 import java.util.Date;
 
 /**
- * Clase que representa una puntuación en el juego.
  *
- * Cada instancia de esta clase contiene información sobre la puntuación
- * obtenida, la fecha en que se registró y el nombre del jugador que obtuvo la
- * puntuación.
- *
- *
+ * @author rferpor
  */
 public class Score {
 
@@ -22,65 +17,58 @@ public class Score {
     private String name;
 
     /**
-     * Obtiene el nombre del jugador asociado a la puntuación.
      *
-     * @return El nombre del jugador.
+     * @return
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Establece el nombre del jugador asociado a la puntuación.
      *
-     * @param name El nombre del jugador.
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Obtiene la cantidad de puntos de la puntuación.
      *
-     * @return La cantidad de puntos.
+     * @return
      */
     public int getPoints() {
         return points;
     }
 
     /**
-     * Establece la cantidad de puntos de la puntuación.
      *
-     * @param points La cantidad de puntos.
+     * @param points
      */
     public void setPoints(int points) {
         this.points = points;
     }
 
     /**
-     * Obtiene la fecha en que se registró la puntuación.
      *
-     * @return La fecha de la puntuación.
+     * @return
      */
     public Date getDate() {
         return date;
     }
 
     /**
-     * Establece la fecha en que se registró la puntuación.
      *
-     * @param date La fecha de la puntuación.
+     * @param date
      */
     public void setDate(Date date) {
         this.date = date;
     }
 
     /**
-     * Constructor de la clase Score.
      *
-     * @param points La cantidad de puntos.
-     * @param date La fecha de la puntuación.
-     * @param name El nombre del jugador.
+     * @param points
+     * @param date
+     * @param name
      */
     public Score(int points, Date date, String name) {
         this.points = points;

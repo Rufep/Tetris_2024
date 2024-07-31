@@ -10,19 +10,17 @@ import Model.Piece;
 import java.awt.Color;
 
 /**
- * Clase que representa una pieza en forma de Z, que extiende la clase Piece.
- * Permite rotar la pieza Z.
  *
+ * @author rferpor
  */
 public class ZPiece extends Piece {
 
     private int position = 0;
 
     /**
-     * Constructor para la clase ZPiece, que crea la pieza Z con cuatro
-     * cuadrados.
+     * creamos a peza Z
      *
-     * @param game El objeto Game que representa el juego actual.
+     * @param game
      */
     public ZPiece(Game game) {
 
@@ -36,9 +34,9 @@ public class ZPiece extends Piece {
     }
 
     /**
-     * Método que rota la pieza Z.
+     * metodo que rota a peza Zi
      *
-     * @return true si la rotación fue posible, false si no.
+     * @return
      */
     @Override
     public boolean rotate() {
@@ -46,7 +44,7 @@ public class ZPiece extends Piece {
         boolean canRotate = false;
         switch (position) {
             case 0:
-                // Condiciones de movimiento de la pieza
+                //move piece condiditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -62,9 +60,9 @@ public class ZPiece extends Piece {
                     canRotate = true;
                 }
                 break;
-
+                
             case 1:
-                // Condiciones de movimiento de la pieza
+                //move piece condiditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -80,9 +78,9 @@ public class ZPiece extends Piece {
                     canRotate = true;
                 }
                 break;
-
+                
             case 2:
-                // Condiciones de movimiento de la pieza
+                //move piece condiditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
@@ -98,9 +96,9 @@ public class ZPiece extends Piece {
                     canRotate = true;
                 }
                 break;
-
+                
             case 3:
-                // Condiciones de movimiento de la pieza
+                //move piece condiditions
                 if (game.isValidPosition(squares[0].getX() - Game.SQUARE_SIDE, squares[0].getY() + Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[2].getX() + Game.SQUARE_SIDE, squares[2].getY() - Game.SQUARE_SIDE)
                         && game.isValidPosition(squares[3].getX(), squares[3].getY() - 2 * Game.SQUARE_SIDE)) {
